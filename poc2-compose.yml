@@ -1,0 +1,68 @@
+name: 'poc2'
+
+
+
+
+
+services:
+
+  proxy:
+    image: 'docker.io/nginxinc/nginx-unprivileged:1.28.0-alpine-slim'
+    networks:
+      lan: {}
+    ports:
+      - 8080:8080/tcp
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+
+  keycloak:
+    image: 'quay.io/keycloak/keycloak:26.2.4-0'
+    networks:
+      lan: {}
+    command: 'start-dev --import-realm'
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HTTP_RELATIVE_PATH: '/auth/'
+      KC_PROXY_HEADERS: 'xforwarded'
+      KC_HTTP_ENABLED: 'true'
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+
+  mongo:
+    image: 'docker.io/mongo:7.0.20'
+    networks:
+      lan: {}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rootuser
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+    tmpfs:
+      - "/data/configdb"
+      - "/data/db"
+
+  backend:
+    image: 'poc2-be:1.0.0'
+    networks:
+      lan: {}
+    environment:
+       AUTH_INTROSPECTION_ENDPOINT: "http://proxy:8080/auth/realms/poc/protocol/openid-connect/token/introspect" #send to proxy, we can't request direct to kc because of the headers!
+       AUTH_CLIENT_ID: "private"
+       AUTH_CLIENT_SECRET: "VaSyUQksKSDf1Suv1lLVrmxaRQNaczHW"
+    build:
+      context: ./poc2-backend/
+
+  frontend:
+    image: 'poc1-fe:1.0.0'
+    networks:
+      lan: {}
+    build:
+      context: ./poc1-frontend/
+
+
+
+
+
+networks:
+  lan:
+    driver: bridge
+    name: 'poc2'
