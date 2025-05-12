@@ -45,9 +45,10 @@ services:
     networks:
       lan: {}
     environment:
-       AUTH_INTROSPECTION_ENDPOINT: "http://proxy:8080/auth/realms/poc/protocol/openid-connect/token/introspect" #send to proxy, we can't request direct to kc because of the headers!
-       AUTH_CLIENT_ID: "private"
-       AUTH_CLIENT_SECRET: "VaSyUQksKSDf1Suv1lLVrmxaRQNaczHW"
+      AUTH_INTROSPECTION_ENDPOINT: "http://proxy:8080/auth/realms/poc/protocol/openid-connect/token/introspect" #send to proxy, we can't request direct to kc because of the headers!
+      AUTH_CLIENT_ID: "private"
+      AUTH_CLIENT_SECRET: "VaSyUQksKSDf1Suv1lLVrmxaRQNaczHW"
+      MONGODB_URI: "mongodb://rootuser:rootpass@mongo:27017/"
     build:
       context: ./poc2-backend/
 

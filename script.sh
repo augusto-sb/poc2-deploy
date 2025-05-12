@@ -14,4 +14,4 @@ done
 #git clone https://github.com/augusto-sb/poc2-backend.git;
 #git clone https://github.com/augusto-sb/poc1-frontend.git;
 
-docker compose -f poc1-compose.yml up --build --force-recreate;
+docker compose -f poc2-compose.yml up --build --force-recreate;
