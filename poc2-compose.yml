@@ -49,6 +49,7 @@ services:
       AUTH_CLIENT_ID: "private"
       AUTH_CLIENT_SECRET: "VaSyUQksKSDf1Suv1lLVrmxaRQNaczHW"
       MONGODB_URI: "mongodb://rootuser:rootpass@mongo:27017/"
+      CONTEXT_PATH: /backend/
     build:
       context: ./poc2-backend/
 
