@@ -53,11 +53,14 @@ services:
       context: ./poc2-backend/
 
   frontend:
-    image: 'poc1-fe:1.0.0'
+    image: 'poc1-fe:2.0.0'
     networks:
       lan: {}
+    environment:
+      CONTEXT_PATH: /frontend/
     build:
       context: ./poc1-frontend/
+      dockerfile: Dockerfile.v2
 
 
 
