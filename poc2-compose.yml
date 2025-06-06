@@ -30,7 +30,7 @@ services:
       - ./realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
 
   mongo:
-    image: 'docker.io/mongo:7.0.20'
+    image: 'docker.io/library/mongo:7.0.21'
     networks:
       lan: {}
     environment:
